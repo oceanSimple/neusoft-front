@@ -16,9 +16,19 @@ const homePageRoutes = [
                 component: () => import('../components/home/children/publicSupervision.vue')
             },
             {
+                path: '/home/publicSupDetail',
+                name: 'publicSupDetail',
+                component: () => import('../components/home/children/publicSupDetail.vue')
+            },
+            {
                 path: '/home/confirmAQI',
                 name: 'confirmAQI',
                 component: () => import('../components/home/children/confirmAQI.vue')
+            },
+            {
+                path: '/home/confirmAqiDetail',
+                name: 'confirmAQIDetail',
+                component: () => import('../components/home/children/confrimAqiDetail.vue')
             },
             {
                 path: '/home/provincialGroup',

@@ -48,40 +48,48 @@
         type="date"
     />
 
-    <div class="table">
-      <el-table :data="record" style="width: 100%">
-        <el-table-column label="序号" type="index"></el-table-column>
-        <!--    <el-table-column label="编号" prop="id"></el-table-column>-->
-        <el-table-column label="反馈者姓名" prop="name"></el-table-column>
-        <el-table-column label="所在省" prop="province"></el-table-column>
-        <el-table-column label="所在市" prop="city"></el-table-column>
-        <el-table-column label="AQI" prop="aqi"></el-table-column>
-        <el-table-column label="反馈日期" prop="date"></el-table-column>
-        <el-table-column label="反馈时间" prop="time"></el-table-column>
-        <el-table-column align="center" class="operation-container" label="操作">
-          <template #default="{row}">
-            <div>
-              <el-icon color="#0ec9f7" @click="pointTo(row)">
-                <Tickets/>
-              </el-icon>
-            </div>
-            <div>
-              <el-icon color="red">
-                <Pointer/>
-              </el-icon>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+    <el-button type="danger" @click="clearParam">清空</el-button>
+    <el-button type="primary" @click="query">查询</el-button>
 
-    <!--分页组件-->
-    <div class="pagination">
-      <el-pagination
-          v-model:current-page="pageAtr.currentPage"
-          :total="pageAtr.total"
-          layout="prev, pager, next"/>
-    </div>
+    <el-radio-group v-model="isPointTo">
+      <el-radio value='0'>未指派</el-radio>
+      <el-radio value='1'>已指派</el-radio>
+    </el-radio-group>
+  </div>
+
+  <div class="table">
+    <el-table :data="record" style="width: 100%">
+      <el-table-column label="序号" type="index"></el-table-column>
+      <!--    <el-table-column label="编号" prop="id"></el-table-column>-->
+      <el-table-column label="反馈者姓名" prop="name"></el-table-column>
+      <el-table-column label="所在省" prop="province"></el-table-column>
+      <el-table-column label="所在市" prop="city"></el-table-column>
+      <el-table-column label="AQI" prop="aqi"></el-table-column>
+      <el-table-column label="反馈日期" prop="date"></el-table-column>
+      <el-table-column label="反馈时间" prop="time"></el-table-column>
+      <el-table-column align="center" class="operation-container" label="操作">
+        <template #default="{row}">
+          <div>
+            <el-icon color="#0ec9f7" @click="pointTo(row)">
+              <Tickets/>
+            </el-icon>
+          </div>
+          <div>
+            <el-icon color="red">
+              <Pointer/>
+            </el-icon>
+          </div>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+
+  <!--分页组件-->
+  <div class="pagination">
+    <el-pagination
+        v-model:current-page="pageAtr.currentPage"
+        :total="pageAtr.total"
+        layout="prev, pager, next"/>
   </div>
 </template>
 
@@ -89,6 +97,7 @@
 import {useDataStore} from "../../../store/dataStore.js";
 import {onMounted, reactive, ref, watch} from "vue";
 import {getCities, getProvinces} from "../../../util/gridList.js";
+import router from "../../../router/index.js";
 
 // 网格选择器属性
 let selectAtr = reactive({
@@ -111,6 +120,7 @@ let levelAtr = reactive({
   selectedLevel: ''
 })
 
+// 反馈日期选择器
 let datePicker = ref('')
 
 // 分页组件属性
@@ -122,12 +132,18 @@ let pageAtr = reactive(
     }
 )
 
+// 是否指派
+let isPointTo = ref('0')
+
+// table数据
 let record = ref([]);
+
 let dataStore = useDataStore();
+let route = router;
 
-
-const updateTAble = async (index) => {
-  const data = await dataStore.getPublicSupervisionData(index);
+// 更新表格数据
+const updateTable = async () => {
+  const data = await dataStore.getPublicSupervisionData(getQuery())
   // 将分页插件的数据填充
   pageAtr.total = data.total
   record.value = convertTime(data.records)
@@ -143,14 +159,36 @@ const convertTime = (record) => {
   return record
 }
 
+// 查询列表的参数
+const getQuery = () => {
+  // 日期选择器的组件返回的是time对象，因此需要通过time对象拼接成YYYY-MM-DD格式
+  let date;
+  if (datePicker.value === '') {
+    date = ''
+  } else {
+    date = datePicker.value.getFullYear() + '-' +
+        (datePicker.value.getMonth() + 1).toString().padStart(2, '0') + '-' +
+        datePicker.value.getDate().toString().padStart(2, '0');
+  }
+  return {
+    index: pageAtr.currentPage,
+    province: selectAtr.selectedProvince,
+    city: selectAtr.selectedCity,
+    aqi: levelAtr.selectedLevel,
+    date: date,
+    isArranged: parseInt(isPointTo.value)
+  }
+}
+
 // 指派按钮
 const pointTo = (row) => {
-  console.log(row)
+  route.push("/home/publicSupDetail")
+  dataStore.publicSupId = row.id
 }
 
 // 监听currentPage的变化
 watch(() => pageAtr.currentPage, async (newVal) => {
-  await updateTAble(newVal)
+  await updateTable(newVal)
 })
 
 // 监听selectAtr.selectedProvince的变化
@@ -165,12 +203,25 @@ watch(() => selectAtr.selectedProvince, (newVal) => {
   }
 })
 
+// 查询按钮
+const query = () => {
+  updateTable()
+}
+
+// 清空按钮
+const clearParam = () => {
+  selectAtr.selectedProvince = ''
+  selectAtr.selectedCity = ''
+  levelAtr.selectedLevel = ''
+  datePicker.value = ''
+  isPointTo.value = '0'
+}
+
 onMounted(async () => {
   // 初始化select
   selectAtr.province = getProvinces()
-  console.log(selectAtr.province)
   // 初始化表格数据
-  await updateTAble(1)
+  await updateTable()
 });
 
 </script>

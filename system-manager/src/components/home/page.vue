@@ -17,11 +17,11 @@
           <el-row class="tac">
             <el-col :span="24">
               <el-menu
+                  :default-openeds="['1','2']"
                   active-text-color="blue"
                   background-color="#0ec9f7"
                   class="el-menu-vertical-demo"
                   default-active="1-1"
-                  default-openeds=[1,2]
                   text-color="white"
               >
                 <el-sub-menu index="1">
