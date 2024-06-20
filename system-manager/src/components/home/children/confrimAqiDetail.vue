@@ -1,3 +1,4 @@
+<!--ODO api修改了-->
 <template>
   <div class="back">
     <el-button type="primary" @click="back">返回</el-button>
@@ -5,7 +6,7 @@
 
   <el-descriptions border :column="1" title="公众监督数据详情">
     <el-descriptions-item label="公众监督反馈信息编号">
-      {{ dataStore.aqiConfirmId }}
+      {{ tableInfo.id }}
     </el-descriptions-item>
     <el-descriptions-item label="确认信息所在地址">
       <el-tag class="table-tag">{{ tableInfo.address.province}}</el-tag>
@@ -22,7 +23,7 @@
     </el-descriptions-item>
     <el-descriptions-item label="网格员信息">
       <el-tag class="table-tag">{{ tableInfo.samplerInfo.name }}</el-tag>
-      <el-tag class="table-tag">{{ tableInfo.samplerInfo.phone }}</el-tag>
+<!--      <el-tag class="table-tag">{{ tableInfo.samplerInfo.phone }}</el-tag>-->
     </el-descriptions-item>
     <el-descriptions-item label="公众监督员信息">
       <el-tag class="table-tag">{{ tableInfo.supervisorInfo.name }}</el-tag>
@@ -41,7 +42,7 @@ import {useDataStore} from "../../../store/dataStore.js";
 
 const dataStore = useDataStore()
 const tableInfo = reactive({
-  id: dataStore.aqiConfirmId,
+  id: '',
   address: {
     province: "",
     city: "",
@@ -71,30 +72,25 @@ const back = () => {
 }
 
 onMounted(async () => {
-  const samplerTask = await dataStore.getSamplerData(dataStore.aqiConfirmId)
-  const supervisorTask = await dataStore.getSupervisorTask(samplerTask.supervisorTaskId)
-  const supervisorInfo = await dataStore.getSupervisorInfo(supervisorTask.supervisorId)
-  const samplerInfo = await dataStore.getSamplerInfo(samplerTask.samplerId)
-  const gridInfo = await dataStore.getGridData(supervisorTask.gridId)
+  const data = dataStore.aqiConfirmInfo
+  tableInfo.id = data.id
 
-  tableInfo.address.province = gridInfo.province
-  tableInfo.address.city = gridInfo.city
-  tableInfo.address.district = gridInfo.address
+  tableInfo.address.province = data.province
+  tableInfo.address.city = data.city
+  tableInfo.address.district = data.address
 
-  tableInfo.aqiLevel.level = samplerTask.aqi
-  tableInfo.aqiLevel.description = samplerTask.aqi
+  tableInfo.aqiLevel.level = data.level
+  tableInfo.aqiLevel.description = data.levelDesc
 
-  tableInfo.date.date = samplerTask.time.split(" ")[0]
-  tableInfo.date.time = samplerTask.time.split(" ")[1]
+  tableInfo.date.date = data.date
+  tableInfo.date.time = data.time
 
-  tableInfo.samplerInfo.name = samplerInfo.name
-  // TODO 有问题
-  tableInfo.samplerInfo.phone = samplerInfo.code
+  tableInfo.samplerInfo.name = data.sampler
 
-  tableInfo.supervisorInfo.name = supervisorInfo.name
-  tableInfo.supervisorInfo.phone = supervisorInfo.phoneNumber
+  tableInfo.supervisorInfo.name = data.supervisorName
+  tableInfo.supervisorInfo.phone = data.supervisorId
 
-  tableInfo.description = supervisorTask.message
+  tableInfo.description = data.message
 })
 </script>
 

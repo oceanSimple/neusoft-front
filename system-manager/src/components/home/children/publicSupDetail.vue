@@ -23,7 +23,7 @@
       {{ tableInfo.description }}
     </el-descriptions-item>
     <el-descriptions-item label="预估等级">
-      <el-tag class="table-tag">{{ tableInfo.levelDescription }}</el-tag>
+      <el-tag class="table-tag">{{ tableInfo.level }}级</el-tag>
       <el-tag class="table-tag">{{ tableInfo.levelDescription }}</el-tag>
     </el-descriptions-item>
     <el-descriptions-item label="反馈日期时间">
@@ -37,9 +37,13 @@
 import {onMounted, reactive} from "vue";
 import {useDataStore} from "../../../store/dataStore.js";
 import router from "../../../router/index.js";
+import {getAqiLevel, getAqiLevelDesc, getAqiLevelInfo} from "../../../util/aqi.js";
 
 const dataStore = useDataStore();
-
+const aqiInfo = reactive({
+  level: "",
+  description: "",
+})
 const tableInfo = reactive({
   id: dataStore.publicSupId,
   name: "",
@@ -77,8 +81,10 @@ onMounted(async () => {
   tableInfo.city = gridInfo.city
   tableInfo.district = gridInfo.address
   tableInfo.description = taskInfo.message
-  tableInfo.level = taskInfo.aqi
-  tableInfo.levelDescription = taskInfo.aqi
+
+  tableInfo.level = getAqiLevel(taskInfo.aqi)
+  tableInfo.levelDescription =getAqiLevelDesc(taskInfo.aqi)
+
   tableInfo.date = timeFormat(taskInfo.time).date
   tableInfo.time = timeFormat(taskInfo.time).time
 })

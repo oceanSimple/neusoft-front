@@ -1,9 +1,7 @@
 import axios from "axios";
 
-const mockUrl = "http://127.0.0.1:4523/m1/4475331-0-default"
-
 // 主要为了告知login请求，因为login不需要jwt token
-const baseUrl = mockUrl
+const baseUrl = '/mock'
 
 // 创建axios实例
 const requests = axios.create({

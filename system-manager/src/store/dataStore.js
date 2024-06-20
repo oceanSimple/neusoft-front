@@ -18,7 +18,7 @@ export const useDataStore = defineStore("data", {
     state: () => ({
         gridData: [],
         publicSupId: 0,
-        aqiConfirmId: 0,
+        aqiConfirmInfo: {},
     }),
     actions: {
         async getPublicSupervisionData(param) {

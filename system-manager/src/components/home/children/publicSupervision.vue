@@ -64,7 +64,11 @@
       <el-table-column label="反馈者姓名" prop="name"></el-table-column>
       <el-table-column label="所在省" prop="province"></el-table-column>
       <el-table-column label="所在市" prop="city"></el-table-column>
-      <el-table-column label="AQI" prop="aqi"></el-table-column>
+      <el-table-column label="AQI" prop="aqi">
+        <template #default="{row}">
+          <div :style="{color: row.color}">{{ row.levelDesc }}({{row.level}})</div>
+        </template>
+      </el-table-column>
       <el-table-column label="反馈日期" prop="date"></el-table-column>
       <el-table-column label="反馈时间" prop="time"></el-table-column>
       <el-table-column align="center" class="operation-container" label="操作">
@@ -98,6 +102,7 @@ import {useDataStore} from "../../../store/dataStore.js";
 import {onMounted, reactive, ref, watch} from "vue";
 import {getCities, getProvinces} from "../../../util/gridList.js";
 import router from "../../../router/index.js";
+import {getAqiLevelInfo} from "../../../util/aqi.js";
 
 // 网格选择器属性
 let selectAtr = reactive({
@@ -111,11 +116,12 @@ let selectAtr = reactive({
 // 预估污染等级选择器
 let levelAtr = reactive({
   level: [
-    {value: 1, label: '轻度污染(一级)'},
-    {value: 2, label: '初级污染(二级)'},
-    {value: 3, label: '中度污染(三级)'},
-    {value: 4, label: '重度污染(四级)'},
-    {value: 5, label: '严重污染(五级)'},
+    {value: 1, label: '优(一级)'},
+    {value: 2, label: '良(二级)'},
+    {value: 3, label: '轻度污染(三级)'},
+    {value: 4, label: '中度污染(四级)'},
+    {value: 5, label: '重度污染(五级)'},
+    {value: 6, label: '严重污染(六级)'},
   ],
   selectedLevel: ''
 })
@@ -126,7 +132,7 @@ let datePicker = ref('')
 // 分页组件属性
 let pageAtr = reactive(
     {
-      currentPage: 3,
+      currentPage: 1,
       pageSize: 10,
       total: 100
     }
@@ -146,7 +152,10 @@ const updateTable = async () => {
   const data = await dataStore.getPublicSupervisionData(getQuery())
   // 将分页插件的数据填充
   pageAtr.total = data.total
-  record.value = convertTime(data.records)
+  // 将aqi数字转换成信息
+  getAqiLevelInfo(data.records)
+  // record.value = convertTime(data.records)
+  record.value = data.records
 }
 
 // 将原来的time属性转换为date和time两个属性

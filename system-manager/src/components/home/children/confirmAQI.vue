@@ -45,11 +45,15 @@
       <!--    <el-table-column label="编号" prop="id"></el-table-column>-->
       <el-table-column label="所在省" prop="province"></el-table-column>
       <el-table-column label="所在市" prop="city"></el-table-column>
-      <el-table-column label="AQI" prop="aqi"></el-table-column>
+      <el-table-column label="AQI" prop="aqi">
+        <template #default="{row}">
+          <div :style="{color: row.color}">{{ row.levelDesc }}({{row.level}})</div>
+        </template>
+      </el-table-column>
       <el-table-column label="确认日期" prop="date"></el-table-column>
       <el-table-column label="确认时间" prop="time"></el-table-column>
       <el-table-column label="网格员" prop="sampler"></el-table-column>
-      <el-table-column label="反馈者" prop="supervisor"></el-table-column>
+      <el-table-column label="反馈者" prop="supervisorName"></el-table-column>
       <el-table-column align="center" class="operation-container" label="操作">
         <template #default="{row}">
           <div>
@@ -69,6 +73,7 @@ import {onMounted, reactive, ref, watch} from "vue";
 import {getCities, getProvinces} from "../../../util/gridList.js";
 import {useDataStore} from "../../../store/dataStore.js";
 import router from "../../../router/index.js";
+import {getAqiLevelInfo} from "../../../util/aqi.js";
 
 const dataStore = useDataStore()
 let selectAtr = reactive({
@@ -131,6 +136,8 @@ const getQuery = () => {
 
 const updateTable = async () => {
   const data = await dataStore.getAqiConfirmData(getQuery())
+  // 将aqi数字转换成信息
+  getAqiLevelInfo(data.records)
   record.value = data.records
   pageAtr.total = data.total
 }
@@ -141,7 +148,8 @@ const query = async () => {
 
 const pointTo = (row) => {
   router.push("/home/confirmAqiDetail")
-  dataStore.aqiConfirmId = row.id
+  dataStore.aqiConfirmInfo = row
+  console.log(dataStore.aqiConfirmInfo)
 }
 
 onMounted(async () => {

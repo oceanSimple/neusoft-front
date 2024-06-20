@@ -19,7 +19,7 @@ const dataStore = useDataStore();
 let record = ref([])
 onMounted(async () => {
   const result = await dataStore.getAqiDistributionData()
-  linkRecord(getAqiLevelCount(result))
+  linkRecord(result)
 })
 // 组装record
 const linkRecord = (levels) => {
