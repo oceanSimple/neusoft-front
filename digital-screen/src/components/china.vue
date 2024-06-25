@@ -15,8 +15,22 @@ onMounted(() => {
       {
         type: "map",
         map: 'china', // 引入地图数据
+        name: 'AQI统计',
+        data: [
+          {
+            name: '河北省',
+            value: 100
+          },
+          {
+            name: '湖北省',
+            value: 200
+          }
+        ]
       },
     ],
+    tooltip: {
+      trigger: "item",
+    },
   };
   myChart.setOption(option);
 })
