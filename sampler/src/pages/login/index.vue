@@ -12,21 +12,15 @@
 
 <script setup>
 import {onMounted, ref} from 'vue';
-import {useDataStore} from '../../stores/data';
+import {useDataStore} from '../../store/dataStore';
 
 const dataStore = useDataStore();
 const code = ref('');
 const password = ref('');
 
-const toRegister = () => {
-  uni.navigateTo({
-    url: '/pages/register/index',
-  })
-}
-
 const login = async () => {
   await uni.request({
-    url: dataStore.requestPrefix + '/supervisor/login',
+    url: dataStore.requestPrefix + '/sampler/login',
     method: 'POST',
     data: {
       phoneNumber: code.value,
@@ -34,13 +28,14 @@ const login = async () => {
     },
     success: (res) => {
       // 根据data.code判断是否登录成功
-      if (res.data.code === 0) { // 登录成功
+      if (res.data.code > 0) { // 登录成功
         dataStore.jwt = res.data.data // 将jwt保存在pinia仓库
         // 将jwt存入本地存储
         uni.setStorage({
           key: 'jwt',
           data: res.data.data
         })
+        console.log(res)
         // TODO 跳转到首页
       } else {
         uni.showToast({

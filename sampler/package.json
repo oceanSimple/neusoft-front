@@ -1,5 +1,5 @@
 {
-  "name": "supervisor",
+  "name": "sampler",
   "version": "0.0.0",
   "scripts": {
     "dev:app": "uni -p app",
@@ -55,9 +55,8 @@
     "@dcloudio/uni-mp-xhs": "3.0.0-4010520240507001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4010520240507001",
     "@dcloudio/uni-ui": "^1.5.5",
+    "install": "^0.13.0",
     "pinia": "^2.1.7",
-    "thorui-uni": "^3.0.0",
-    "uview-ui": "2.0.36",
     "vue": "^3.4.21",
     "vue-i18n": "^9.1.9"
   },
