@@ -1,43 +1,45 @@
 <template>
-  <div class="back">
-    <el-button type="primary" @click="back">返回</el-button>
+  <div style="margin:10px">
+    <div class="back">
+      <el-button type="primary" @click="back">返回</el-button>
+    </div>
+    <el-descriptions :column="1" border title="公众监督数据详情">
+      <el-descriptions-item label="公众监督反馈信息编号">
+        {{ dataStore.publicSupId }}
+      </el-descriptions-item>
+      <el-descriptions-item label="反馈者信息">
+        <el-tag class="table-tag">{{ tableInfo.name }}</el-tag>
+        <el-tag class="table-tag">{{ tableInfo.gender }}</el-tag>
+        <el-tag class="table-tag">{{ tableInfo.birth }}</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="反馈者联系电话">
+        {{ tableInfo.phone }}
+      </el-descriptions-item>
+      <el-descriptions-item label="反馈信息所在地址">
+        <el-tag class="table-tag">{{ tableInfo.province }}</el-tag>
+        <el-tag class="table-tag">{{ tableInfo.city }}</el-tag>
+        <el-tag class="table-tag">{{ tableInfo.district }}</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="反馈信息描述">
+        {{ tableInfo.description }}
+      </el-descriptions-item>
+      <el-descriptions-item label="预估等级">
+        <el-tag class="table-tag">{{ tableInfo.level }}级</el-tag>
+        <el-tag class="table-tag">{{ tableInfo.levelDescription }}</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="反馈日期时间">
+        <el-tag class="table-tag">{{ tableInfo.date }}</el-tag>
+        <el-tag class="table-tag">{{ tableInfo.time }}</el-tag>
+      </el-descriptions-item>
+    </el-descriptions>
   </div>
-  <el-descriptions border :column="1" title="公众监督数据详情">
-    <el-descriptions-item label="公众监督反馈信息编号">
-      {{ dataStore.publicSupId }}
-    </el-descriptions-item>
-    <el-descriptions-item label="反馈者信息">
-      <el-tag class="table-tag">{{ tableInfo.name }}</el-tag>
-      <el-tag class="table-tag">{{ tableInfo.gender }}</el-tag>
-      <el-tag class="table-tag">{{ tableInfo.birth }}</el-tag>
-    </el-descriptions-item>
-    <el-descriptions-item label="反馈者联系电话">
-      {{ tableInfo.phone }}
-    </el-descriptions-item>
-    <el-descriptions-item label="反馈信息所在地址">
-      <el-tag class="table-tag">{{ tableInfo.province }}</el-tag>
-      <el-tag class="table-tag">{{ tableInfo.city }}</el-tag>
-      <el-tag class="table-tag">{{ tableInfo.district }}</el-tag>
-    </el-descriptions-item>
-    <el-descriptions-item label="反馈信息描述">
-      {{ tableInfo.description }}
-    </el-descriptions-item>
-    <el-descriptions-item label="预估等级">
-      <el-tag class="table-tag">{{ tableInfo.level }}级</el-tag>
-      <el-tag class="table-tag">{{ tableInfo.levelDescription }}</el-tag>
-    </el-descriptions-item>
-    <el-descriptions-item label="反馈日期时间">
-      <el-tag class="table-tag">{{ tableInfo.date }}</el-tag>
-      <el-tag class="table-tag">{{ tableInfo.time }}</el-tag>
-    </el-descriptions-item>
-  </el-descriptions>
 </template>
 
 <script setup>
 import {onMounted, reactive} from "vue";
 import {useDataStore} from "../../../store/dataStore.js";
 import router from "../../../router/index.js";
-import {getAqiLevel, getAqiLevelDesc, getAqiLevelInfo} from "../../../util/aqi.js";
+import {getAqiLevel, getAqiLevelDesc} from "../../../util/aqi.js";
 
 const dataStore = useDataStore();
 const aqiInfo = reactive({
@@ -83,7 +85,7 @@ onMounted(async () => {
   tableInfo.description = taskInfo.message
 
   tableInfo.level = getAqiLevel(taskInfo.aqi)
-  tableInfo.levelDescription =getAqiLevelDesc(taskInfo.aqi)
+  tableInfo.levelDescription = getAqiLevelDesc(taskInfo.aqi)
 
   tableInfo.date = timeFormat(taskInfo.time).date
   tableInfo.time = timeFormat(taskInfo.time).time
@@ -110,12 +112,6 @@ function genderFormat(gender) {
 </script>
 
 <style scoped>
-.main-container {
-  width: 80%;
-  border: red 1px solid;
-  margin-left: 10%;
-}
-
 .table-tag {
   margin-right: 10px;
 }

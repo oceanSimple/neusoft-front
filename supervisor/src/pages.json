@@ -39,6 +39,18 @@
       }
     },
     {
+      "path": "pages/province/index",
+      "style": {
+        "navigationBarTitleText": "选择省份"
+      }
+    },
+    {
+      "path": "pages/city/index",
+      "style": {
+        "navigationBarTitleText": "选择城市"
+      }
+    },
+    {
       "path": "pages/index/index",
       "style": {
         "navigationBarTitleText": "uni-app"

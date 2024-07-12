@@ -1,12 +1,15 @@
 <template>
-  <uni-card @click="cardClick(info)" v-for="(info,index) in tableData" :key="index">
-    <view class="table-row">
-      <view :style="{background: info.color}" class="table-aqi">{{ info.aqi }}</view>
-      <view class="table-time">{{ info.time }}</view>
-      <view class="table-province">{{ info.province }}</view>
-      <view class="table-city">{{ info.city }}</view>
-    </view>
-  </uni-card>
+  <view class="background-gradient">
+    <view style="height: 20px"></view>
+    <uni-card v-for="(info,index) in tableData" :key="index" @click="cardClick(info)">
+      <view class="table-row">
+        <view :style="{background: info.color}" class="table-aqi">{{ info.aqi }}</view>
+        <view class="table-time">{{ info.date }} {{ info.time }}</view>
+        <view class="table-province">{{ info.province }}</view>
+        <view class="table-city">{{ info.city }}</view>
+      </view>
+    </uni-card>
+  </view>
 </template>
 
 <script setup>
@@ -21,7 +24,7 @@ const getHistoryInfo = async () => {
     url: dataStore.requestPrefix + '/supervisor/list',
     method: 'GET',
     header: {
-      'Authorization': 'Beared ' + dataStore.jwt
+      'Authorization': 'Bearer ' + dataStore.jwt
     },
     success: (res) => {
       tableData.value.push(...res.data.data)
@@ -40,6 +43,12 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.background-gradient {
+  background: linear-gradient(to bottom, #f6f8f6, #c8e6c9);
+  /* 其他样式（如高度）根据需要添加 */
+  height: 100vh; /* 使渐变覆盖整个视口高度 */
+}
+
 .table-row {
   display: flex;
   margin-top: 10px;

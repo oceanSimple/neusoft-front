@@ -1,6 +1,9 @@
 <template>
-  <view>
+  <view class="container">
+    <view class="empty"></view>
     <uni-card>
+      <view class="top-title">注册账号</view>
+
       <uni-forms ref="valiForm" :modelValue="valiFormData" :rules="rules">
         <uni-forms-item label="手机号码">
           <uni-easyinput v-model="valiFormData.phone" placeholder="请输入手机号码"></uni-easyinput>
@@ -116,21 +119,49 @@ const register = async () => {
     url: dataStore.requestPrefix + '/supervisor/register',
     method: 'POST',
     data: {
-      // TODO 注册页面，补充请求参数,同时res处理
       phoneNumber: valiFormData.phone,
       name: valiFormData.name,
-      birthday: valiFormData.age + 2024,
+      // TODO 需要用户的生日，年月日，2021-03-05
+      birthday: '2021-03-05',
       sex: valiFormData.sex,
       password: valiFormData.password,
       remarks: 'remarks'
     },
     success: (res) => {
-      console.log(res)
+      if (res.data.code === 0) {
+        uni.showToast({
+          title: '注册成功',
+          icon: 'success'
+        })
+        uni.navigateTo({
+          url: '/pages/login/index'
+        })
+      } else {
+        uni.showToast({
+          title: '注册失败',
+          icon: 'none'
+        })
+      }
     }
   })
 }
 </script>
 
 <style scoped>
+.empty {
+  height: 80px;
+}
+.container {
+  background-image: url("https://i.ibb.co/k2RTsys/tuscany-5078088-1280.jpg");
+  background-repeat: no-repeat;
+  background-position: center center; /* 或使用预定义的关键词如 top, bottom, left, right */
+  height: 800px;
+}
 
+.top-title {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 50px;
+}
 </style>

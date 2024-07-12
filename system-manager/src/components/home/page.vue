@@ -12,8 +12,8 @@
         </div>
       </el-header>
 
-      <el-container style="height: 600px">
-        <el-aside style="width: 200px">
+      <el-container style="height: 87vh;">
+        <el-aside style="width: 200px;background-color: #10c9f7;">
           <el-row class="tac">
             <el-col :span="24">
               <el-menu
@@ -53,24 +53,14 @@
         </el-aside>
 
 
-        <el-main>
-          <div>
-            <el-breadcrumb separator="/">
-              <el-breadcrumb-item>promotion list</el-breadcrumb-item>
-              <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
-            </el-breadcrumb>
-          </div>
-
-          <div class="main-container">
+        <div style="width: 100%" class="main-container">
             <router-view></router-view>
-          </div>
-
-        </el-main>
+        </div>
       </el-container>
 
       <!--footer-->
       <el-footer class="footer">
-        ©️版权所有 ocean team
+        <div>©️版权所有 ocean team</div>
       </el-footer>
     </el-container>
   </div>
@@ -105,15 +95,12 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.common-layout {
-  border: 1px solid red;
-}
-
 .header {
   background-color: #409EFF;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 8vh;
 }
 
 .icon-phone {
@@ -137,6 +124,11 @@ onMounted(async () => {
   background-color: #409EFF;
   color: white;
   text-align: center;
-  line-height: 60px;
+  height: 5vh;
+  display: flex;
+}
+
+.footer > div {
+  margin: auto;
 }
 </style>

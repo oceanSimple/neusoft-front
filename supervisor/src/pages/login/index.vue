@@ -1,5 +1,9 @@
 <template>
   <view class="content">
+    <view class="empty"></view>
+    <view class="title1">东软环保公众监督平台</view>
+    <view class="title2">公众监督员端</view>
+
     <view class="container card">
       <uni-easyinput v-model="code" class="inputs" placeholder="输入手机号" prefixIcon="person"></uni-easyinput>
       <uni-easyinput v-model="password" class="inputs" placeholder="输入登录密码" prefixIcon="locked"
@@ -15,8 +19,8 @@ import {onMounted, ref} from 'vue';
 import {useDataStore} from '../../stores/data';
 
 const dataStore = useDataStore();
-const code = ref('');
-const password = ref('');
+const code = ref('18810611716');
+const password = ref('chiyingshi030206');
 
 const toRegister = () => {
   uni.navigateTo({
@@ -29,7 +33,7 @@ const login = async () => {
     url: dataStore.requestPrefix + '/supervisor/login',
     method: 'POST',
     data: {
-      phoneNumber: code.value,
+      code: code.value,
       password: password.value
     },
     success: (res) => {
@@ -41,7 +45,9 @@ const login = async () => {
           key: 'jwt',
           data: res.data.data
         })
-        // TODO 跳转到首页
+        uni.navigateTo({
+          url: '/pages/grid/index',
+        })
       } else {
         uni.showToast({
           title: '登录失败',
@@ -57,9 +63,34 @@ onMounted(() => {
 </script>
 
 <style>
+.content {
+  background-image: url("https://i.ibb.co/k2RTsys/tuscany-5078088-1280.jpg");
+  background-repeat: no-repeat;
+  background-position: center center; /* 或使用预定义的关键词如 top, bottom, left, right */
+  height: 800px;
+}
 .container {
   display: flex;
   flex-direction: column;
+}
+
+.empty {
+  height: 150px;
+}
+
+.title1 {
+  text-align: center;
+  font-size: 35px;
+  font-weight: bold;
+  color: #2542a8;
+  font-family: '华文行楷';
+}
+
+.title2 {
+  text-align: center;
+  font-size: 25px;
+  margin-top: 10px;
+  color: #496bd9;
 }
 
 .inputs {
@@ -86,7 +117,8 @@ onMounted(() => {
 }
 
 .card {
-  margin-left: 5%;
+  margin-top: 60px;
+  margin-left: 3%;
   width: 80%;
   padding: 30px;
   background-color: rgba(255, 255, 255, 0.8);

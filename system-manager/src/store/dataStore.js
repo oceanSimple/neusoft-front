@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {
     getAqiConfirmList,
-    getAqiDistribution,
+    getAqiDistribution, getAqiGood, getAqiTotal,
     getAqiTrend,
     getCityCoverage,
     getGrid,
@@ -59,6 +59,12 @@ export const useDataStore = defineStore("data", {
         },
         async getSamplerInfo(id) {
             return await getSamplerInfo(id)
+        },
+        async getAqiTotal() {
+            return await getAqiTotal()
+        },
+        async getAqiGood() {
+            return await getAqiGood()
         }
     }
 })

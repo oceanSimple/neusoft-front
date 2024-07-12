@@ -5,7 +5,7 @@ export default {
   },
   onShow: function () {
     uni.navigateTo({
-      url: '/pages/history/index',
+      url: '/pages/list/index',
     })
     console.log('App Show')
   },

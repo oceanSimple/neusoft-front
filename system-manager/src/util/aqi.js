@@ -44,23 +44,23 @@ export function getAqiLevelCount(aqis) {
 // 将aqi数字转换成aqi等级、等级描述以及颜色标记
 export function getAqiLevelInfo(records) {
     for (let i = 0; i < records.length; i++) {
-        if (records[i].aqi <= 50) {
+        if (records[i].aqi === 1) {
             records[i].level = 1;
             records[i].levelDesc = "优";
             records[i].color = "#00e400";
-        } else if (records[i].aqi <= 100) {
+        } else if (records[i].aqi === 2) {
             records[i].level = 2;
             records[i].levelDesc = "良";
-            records[i].color = "#ff0";
-        } else if (records[i].aqi <= 150) {
+            records[i].color = "#d2d223";
+        } else if (records[i].aqi === 3) {
             records[i].level = 3;
             records[i].levelDesc = "轻度污染";
             records[i].color = "#ff7e00";
-        } else if (records[i].aqi <= 200) {
+        } else if (records[i].aqi === 4) {
             records[i].level = 4;
             records[i].levelDesc = "中度污染";
             records[i].color = "#f00";
-        } else if (records[i].aqi <= 300) {
+        } else if (records[i].aqi === 5) {
             records[i].level = 5;
             records[i].levelDesc = "重度污染";
             records[i].color = "#99004c";
@@ -71,3 +71,33 @@ export function getAqiLevelInfo(records) {
         }
     }
 }
+
+// export function getAqiLevelInfo(records) {
+//     for (let i = 0; i < records.length; i++) {
+//         if (records[i].aqi <= 50) {
+//             records[i].level = 1;
+//             records[i].levelDesc = "优";
+//             records[i].color = "#00e400";
+//         } else if (records[i].aqi <= 100) {
+//             records[i].level = 2;
+//             records[i].levelDesc = "良";
+//             records[i].color = "#d2d223";
+//         } else if (records[i].aqi <= 150) {
+//             records[i].level = 3;
+//             records[i].levelDesc = "轻度污染";
+//             records[i].color = "#ff7e00";
+//         } else if (records[i].aqi <= 200) {
+//             records[i].level = 4;
+//             records[i].levelDesc = "中度污染";
+//             records[i].color = "#f00";
+//         } else if (records[i].aqi <= 300) {
+//             records[i].level = 5;
+//             records[i].levelDesc = "重度污染";
+//             records[i].color = "#99004c";
+//         } else {
+//             records[i].level = 6;
+//             records[i].levelDesc = "严重污染";
+//             records[i].color = "#7e0023";
+//         }
+//     }
+// }

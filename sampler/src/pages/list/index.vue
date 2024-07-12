@@ -1,20 +1,22 @@
 <template>
-  <uni-card v-for="(info, index) in list" :key="index">
-    <view class="table-row">
-      <view :style="{background: info.color}" class="table-aqi">{{ info.aqi }}</view>
+  <view class="container">
+    <view style="height: 30px"></view>
+    <uni-card v-for="(info, index) in list" :key="index">
+      <view class="table-row">
+        <view :style="{background: info.color}" class="table-aqi">{{ info.aqi }}</view>
 
-      <view class="table-info">
-        <view class="table-province">{{ info.province }} {{ info.city }}</view>
-        <view class="table-address">{{ info.address }}</view>
-        <view class="table-address">{{ info.date }}</view>
+        <view class="table-info">
+          <view class="table-province">{{ info.province }} {{ info.city }}</view>
+          <view class="table-address">{{ info.address }}</view>
+          <view class="table-address">{{ info.date }}</view>
+        </view>
+
+        <view class="table-tag" @click="detect(info)">
+          <uni-tag :inverted="true" text="去检测" type="primary"/>
+        </view>
       </view>
-
-      <view class="table-tag" @click="detect(info)">
-        <uni-tag :inverted="true" text="去检测" type="primary"/>
-      </view>
-    </view>
-
-  </uni-card>
+    </uni-card>
+  </view>
 </template>
 
 <script setup>
@@ -29,7 +31,7 @@ const getListInfo = async () => {
     url: dataStore.requestPrefix + '/sampler/list',
     method: 'GET',
     header: {
-      'Authorization': 'Beared ' + dataStore.jwt
+      'Authorization': 'Bearer ' + dataStore.jwt
     },
     success: (res) => {
       list.value = res.data.data
@@ -53,6 +55,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.container {
+  background-image: linear-gradient(to bottom, rgb(209, 242, 255), white);
+  height: 100vh;
+}
 .table-row {
   display: flex;
   margin-top: 5px;

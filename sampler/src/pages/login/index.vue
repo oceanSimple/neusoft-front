@@ -1,6 +1,9 @@
 <template>
   <view class="content">
+    <view style="height: 100px"></view>
     <view class="container card">
+      <view class="title">东软环保公众监督平台</view>
+      <view class="title">网格员端</view>
       <uni-easyinput v-model="code" class="inputs" placeholder="输入手机号" prefixIcon="person"></uni-easyinput>
       <uni-easyinput v-model="password" class="inputs" placeholder="输入登录密码" prefixIcon="locked"
                      type="password"></uni-easyinput>
@@ -15,28 +18,29 @@ import {onMounted, ref} from 'vue';
 import {useDataStore} from '../../store/dataStore';
 
 const dataStore = useDataStore();
-const code = ref('');
-const password = ref('');
+const code = ref('beijixiong1');
+const password = ref('123456');
 
 const login = async () => {
   await uni.request({
     url: dataStore.requestPrefix + '/sampler/login',
     method: 'POST',
     data: {
-      phoneNumber: code.value,
+      code: code.value,
       password: password.value
     },
     success: (res) => {
       // 根据data.code判断是否登录成功
-      if (res.data.code > 0) { // 登录成功
+      if (res.data.code === 0) { // 登录成功
         dataStore.jwt = res.data.data // 将jwt保存在pinia仓库
         // 将jwt存入本地存储
         uni.setStorage({
           key: 'jwt',
           data: res.data.data
         })
-        console.log(res)
-        // TODO 跳转到首页
+        uni.navigateTo({
+          url: '/pages/list/index',
+        })
       } else {
         uni.showToast({
           title: '登录失败',
@@ -52,6 +56,18 @@ onMounted(() => {
 </script>
 
 <style>
+.content {
+  background-image: url("https://i.ibb.co/k2RTsys/tuscany-5078088-1280.jpg");
+  background-repeat: no-repeat;
+  background-position: center center; /* 或使用预定义的关键词如 top, bottom, left, right */
+  height: 800px;
+}
+.title {
+  color: #358c5b;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+}
 .container {
   display: flex;
   flex-direction: column;
@@ -81,7 +97,7 @@ onMounted(() => {
 }
 
 .card {
-  margin-left: 5%;
+  margin-left: 3%;
   width: 80%;
   padding: 30px;
   background-color: rgba(255, 255, 255, 0.8);

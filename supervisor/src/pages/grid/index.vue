@@ -1,21 +1,15 @@
 <template>
-  <view>
-    <view class="container card">
-      <uni-forms>
+  <view class="container">
+    <view class="empty"></view>
+    <uni-forms>
+      <view class="card">
+        <view class="form-title">选择网格</view>
         <uni-forms-item label="所在省">
-          <uni-data-select
-              v-model="data.province"
-              :localdata="selectData.province"
-              @change="provinceChange"
-          ></uni-data-select>
+          <view class="select-tag" @click="toSelectProvincePage">{{ dataStore.selectedProvince }}</view>
         </uni-forms-item>
 
         <uni-forms-item label="所在市">
-          <uni-data-select
-              v-model="data.city"
-              :localdata="selectData.city"
-              @change="provinceChange"
-          ></uni-data-select>
+          <view class="select-tag" @click="toSelectCityPage">{{ dataStore.selectedCity }}</view>
         </uni-forms-item>
 
         <uni-forms-item label="地址">
@@ -23,17 +17,18 @@
         </uni-forms-item>
 
         <button type="primary" @click="commit">提交</button>
-      </uni-forms>
-    </view>
+      </view>
+    </uni-forms>
   </view>
 </template>
 
 <script setup>
 import {useDataStore} from "../../stores/data";
 import {onMounted, reactive, ref, watch} from "vue";
-import {getCity, getProvince} from "../../util/grid";
+import {getProvinces} from "../../util/gridFunc";
 
 const dataStore = useDataStore()
+const province = ref('')
 const data = reactive({
   province: '',
   city: '',
@@ -41,50 +36,47 @@ const data = reactive({
   longitude: 0,
   latitude: 0,
 })
-const selectData = reactive({
+const cityData = reactive({
   province: [],
   city: [],
-  district: [],
-})
-let gridInfo = ref([])
-
-// 监听grid信息变化，同时更新selectData.province
-watch(gridInfo, (newVal, oldVal) => {
-  selectData.province = getProvince(newVal)
-  // console.log('after update selectData.province', selectData.province)
 })
 
-// 监听省选择器的变化，自适应更新市选择器
-const provinceChange = () => {
-  selectData.city = getCity(data.province, gridInfo.value)
+watch(province, (newVal, oldVal) => {
+  console.log('province change', newVal)
+})
+
+const toSelectProvincePage = () => {
+  uni.navigateTo({
+    url: '/pages/province/index',
+  })
 }
 
-// 获取grid信息
-const getGridData = async () => {
-  await uni.request({
-    url: dataStore.requestPrefix + '/admin/getGridList',
-    success: (res) => {
-      dataStore.grid = res.data.data
-      gridInfo.value = res.data.data
-      // selectData.province = getProvince(dataStore.grid)
-    }
-  });
+const toSelectCityPage = () => {
+  uni.navigateTo({
+    url: '/pages/city/index',
+  })
 }
 
 const commit = async () => {
+  console.log("commit")
   // 提交
   uni.request({
     url: dataStore.requestPrefix + '/supervisor/grid',
     method: 'POST',
+    header: {
+      Authorization: 'Bearer ' + dataStore.jwt,
+    },
     data: {
-      province: data.province,
+      // province: data.province,
+      // city: data.city,
+      province: dataStore,
       city: data.city,
       address: data.district,
-      x: data.longitude,
-      y: data.latitude,
+      x: data.longitude * 1000000,
+      y: data.latitude * 1000000,
     },
     success: (res) => {
-      if (res.data.code > 0) {
+      if (res.data.code === 0) {
         // 从data.data中拿到gridId
         dataStore.gridId = res.data.data
         uni.navigateTo({
@@ -101,7 +93,8 @@ const commit = async () => {
 }
 
 onMounted(async () => {
-  await getGridData()
+  // await getGridData()
+  cityData.province = getProvinces()
   // 获取经纬度
   await uni.getLocation({
     type: 'wgs84',
@@ -118,14 +111,37 @@ onMounted(async () => {
 
 <style scoped>
 .container {
+  background-image: url("https://i.ibb.co/k2RTsys/tuscany-5078088-1280.jpg");
+  background-repeat: no-repeat;
+  background-position: center center; /* 或使用预定义的关键词如 top, bottom, left, right */
+  height: 800px;
+}
+
+.empty {
+  height: 150px;
+}
+
+.form-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .card {
-  margin-left: 5%;
+  margin-left: 8%;
   width: 70%;
   padding: 30px;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.select-tag {
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 5px;
+  color: #666;
+  font-size: 12px;
 }
 </style>

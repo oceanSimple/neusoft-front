@@ -1,10 +1,10 @@
 import axios from "axios";
 // 主要为了告知login请求，因为login不需要jwt token
 const baseUrl = '/mock'
-
+const serverUrl = '/server'
 // 创建axios实例
 const requests = axios.create({
-        baseURL: baseUrl,
+        baseURL: serverUrl,
         timeout: 5000
     }
 );

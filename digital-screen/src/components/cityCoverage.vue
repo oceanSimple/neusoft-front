@@ -1,5 +1,5 @@
 <template>
-  <div id="province"></div>
+  <div id="city"></div>
 </template>
 
 <script setup>
@@ -7,7 +7,7 @@ import {onMounted, ref} from "vue";
 import * as echarts from 'echarts';
 import requests from "../util/request.js";
 
-let value = ref(20);
+let value = ref(50);
 
 let option = ref({
   series: [
@@ -69,7 +69,7 @@ let option = ref({
       },
       data: [
         {
-          value: value.value,
+          value: 50,
         }
       ]
     }
@@ -77,24 +77,22 @@ let option = ref({
 });
 
 const requestValue = async () => {
-  await requests.get('/screen/capital', {})
+  await requests.get('/screen/bigcity', {})
       .then(res => {
-        // 后台传来的格式是25.1%
-        // 去掉百分号，并转为数字
-        value.value = parseFloat(res.data.replace('%', ''))
+        value.value = res.data
         option.value.series[0].data[0].value = value.value
-        let myChart = echarts.init(document.getElementById('province'));
+        let myChart = echarts.init(document.getElementById('city'));
         myChart.setOption(option.value);
       })
 }
 
-onMounted(async () => {
-  await requestValue()
+onMounted(() => {
+  requestValue()
 });
 </script>
 
 <style scoped>
-#province {
+#city {
   width: 100%;
   height: 120px;
 }

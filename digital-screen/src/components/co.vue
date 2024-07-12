@@ -1,83 +1,84 @@
 <template>
-  <div class="container">
-    <div>co</div>
-    <div id="co" style="width: 300px;height: 300px"></div>
-  </div>
-
+  <div id="co"></div>
 </template>
 
 <script setup>
-import {onMounted, reactive, ref, watch} from "vue";
+import {onMounted, ref} from "vue";
 import * as echarts from 'echarts';
 import requests from "../util/request.js";
 
-let value = ref(60);
-let option = reactive({
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow'
-    }
-  },
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true
-  },
-  xAxis: [
-    {
-      type: 'category',
-      data: [],
-      axisTick: {
-        alignWithLabel: true
+let xArray = ref(["京", "沪", "黑", "吉", "辽", "鲁", "苏", "浙", "闽", "粤", "津", "鄂"])
+let yArray = ref([1, 2, 5, 4, 3, 2, 5, 6, 7, 8, 9, 10])
+
+const getOption = (data) => {
+  return ref({
+    // 标题
+    title: {
+      // 主标题
+      text: 'co浓度超标累计',
+      textStyle: {
+        color: '#ffffff',
+        fontSize: 12,
+      },
+      left: 'center',
+      top: '10%'
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
       }
-    }
-  ],
-  yAxis: [
-    {
-      type: 'value'
-    }
-  ],
-  series: [
-    {
-      name: 'Direct',
-      type: 'bar',
-      barWidth: '50%',
-      data: [10, 52, 200, 334, 390, 330, 220]
-    }
-  ]
-});
-let xData = ref([])
-let yData = ref([])
-const getPm25Data = () => {
-  requests.get('/screen/co').then(res => {
-    let data = res.data
-    // 将data处理成x，y轴的数据
-    data.forEach(item => {
-      xData.value.push(item.province)
-      yData.value.push(item.value)
-    })
-    option.xAxis[0].data = xData
-    option.series[0].data = yData
-  });
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
+    },
+    xAxis: [
+      {
+        type: 'category',
+        data: xArray.value,
+        axisTick: {
+          alignWithLabel: true
+        }
+      }
+    ],
+    yAxis: [
+      {
+        type: 'value'
+      }
+    ],
+    series: [
+      {
+        name: 'Count',
+        type: 'bar',
+        barWidth: '60%',
+        data: data.value,
+        itemStyle: {
+          color: 'rgba(127,167,245,0.8)'
+        }
+      }
+    ]
+  })
 }
-watch(xData.value, (newValue, oldValue) => {
-  let myChart = echarts.init(document.getElementById('co'));
-  myChart.setOption(option);
-})
+
+const requestValue = () => {
+  requests.get('/screen/co', {})
+      .then(res => {
+        yArray.value = res.data
+        let myChart = echarts.init(document.getElementById('co'));
+        myChart.setOption(getOption(yArray).value);
+      })
+}
 onMounted(() => {
-  getPm25Data();
+  requestValue()
 });
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+#co {
   width: 100%;
-  background-color: #f0f0f0;
+  height: 200px;
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
-  <h1>AQI指数趋势统计</h1>
-  <el-table :data="record" style="width: 100%">
-    <el-table-column label="id" type="index"></el-table-column>
-    <el-table-column label="月份" prop="date"></el-table-column>
-    <el-table-column label="AQI空气质量指数超标数量" prop="aqi"></el-table-column>
-  </el-table>
+  <div style="margin: 10px">
+    <h1>AQI指数趋势统计</h1>
+    <el-table :data="record" style="width: 100%">
+      <el-table-column label="id" type="index"></el-table-column>
+      <el-table-column label="月份" prop="date"></el-table-column>
+      <el-table-column label="AQI空气质量指数超标数量" prop="aqi"></el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script setup>

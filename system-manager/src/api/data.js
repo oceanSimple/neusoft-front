@@ -26,6 +26,10 @@ const getAqiConfirmListUrl = "/admin/samplerTaskList"
 const getSamplerTaskUrl = "/admin/getSamplerTask"
 // 查看指定网格员信息
 const getSamplerInfoUrl = "/admin/getSampler"
+// 获取“空气质量检测总数量”的值
+const aqiTotalUrl = "/admin/total1"
+// 获取“空气质量良好”的值
+const aqiGoodUrl = "/admin/total2"
 
 export async function getPublicSupervisionData(param) {
     let data = undefined
@@ -198,6 +202,28 @@ export async function getSamplerInfo(id) {
             id: id,
         }
     })
+        .then(res => {
+            data = res.data
+        }).catch(err => {
+            console.log(err)
+        })
+    return data
+}
+
+export async function getAqiTotal() {
+    let data = undefined
+    await requests.get(aqiTotalUrl)
+        .then(res => {
+            data = res.data
+        }).catch(err => {
+            console.log(err)
+        })
+    return data
+}
+
+export async function getAqiGood() {
+    let data = undefined
+    await requests.get(aqiGoodUrl)
         .then(res => {
             data = res.data
         }).catch(err => {

@@ -1,100 +1,103 @@
 <template>
-  <div class="head">
-    <span>省区域</span>
-    <el-select
-        v-model="selectAtr.selectedProvince"
-        placeholder="~全部~"
-        style="width: 100px">
-      <el-option
-          v-for="item in selectAtr.province"
-          :key="item"
-          :label="item"
-          :value="item"
+  <div class="main">
+    <div class="head">
+      <span>省区域</span>
+      <el-select
+          v-model="selectAtr.selectedProvince"
+          placeholder="~全部~"
+          style="width: 100px">
+        <el-option
+            v-for="item in selectAtr.province"
+            :key="item"
+            :label="item"
+            :value="item"
+        />
+      </el-select>
+
+      <span>市区域</span>
+      <el-select
+          v-model="selectAtr.selectedCity"
+          :disabled="selectAtr.cityDisabled"
+          placeholder="~全部~"
+          style="width: 100px">
+        <el-option
+            v-for="item in selectAtr.city"
+            :key="item"
+            :label="item"
+            :value="item"
+        />
+      </el-select>
+
+      <span>预估等级</span>
+      <el-select
+          v-model="levelAtr.selectedLevel"
+          placeholder="~全部~"
+          style="width: 150px">
+        <el-option
+            v-for="item in levelAtr.level"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+        />
+      </el-select>
+
+      <span>反馈日期</span>
+      <el-date-picker
+          v-model="datePicker"
+          placeholder="Pick a day"
+          size="small"
+          type="date"
       />
-    </el-select>
 
-    <span>市区域</span>
-    <el-select
-        v-model="selectAtr.selectedCity"
-        :disabled="selectAtr.cityDisabled"
-        placeholder="~全部~"
-        style="width: 100px">
-      <el-option
-          v-for="item in selectAtr.city"
-          :key="item"
-          :label="item"
-          :value="item"
-      />
-    </el-select>
+      <el-button style="margin-left: 5px;" type="danger" @click="clearParam">清空</el-button>
+      <el-button type="primary" @click="query">查询</el-button>
 
-    <span>预估等级</span>
-    <el-select
-        v-model="levelAtr.selectedLevel"
-        placeholder="~全部~"
-        style="width: 150px">
-      <el-option
-          v-for="item in levelAtr.level"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-      />
-    </el-select>
+      <!--<el-radio-group v-model="isPointTo" style="margin-left: 7px;">-->
+      <!--  <el-radio value='0'>未指派</el-radio>-->
+      <!--  <el-radio value='1'>已指派</el-radio>-->
+      <!--</el-radio-group>-->
+    </div>
 
-    <span>反馈日期</span>
-    <el-date-picker
-        v-model="datePicker"
-        placeholder="Pick a day"
-        size="small"
-        type="date"
-    />
+    <div class="table">
+      <el-table :data="record" style="width: 100%">
+        <el-table-column label="id" type="index"></el-table-column>
+        <!--    <el-table-column label="编号" prop="id"></el-table-column>-->
+        <el-table-column label="反馈者姓名" prop="name"></el-table-column>
+        <el-table-column label="所在省" prop="province"></el-table-column>
+        <el-table-column label="所在市" prop="city"></el-table-column>
+        <el-table-column label="AQI" prop="aqi">
+          <template #default="{row}">
+            <div :style="{color: row.color}">{{ row.levelDesc }}({{ row.level }})</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="反馈日期" prop="date"></el-table-column>
+        <el-table-column label="反馈时间" prop="time"></el-table-column>
+        <el-table-column align="center" class="operation-container" label="操作">
+          <template #default="{row}">
+            <div>
+              <el-icon color="#0ec9f7" @click="pointTo(row)">
+                <Tickets/>
+              </el-icon>
+            </div>
+            <!--<div>-->
+            <!--  <el-icon color="red">-->
+            <!--    <Pointer/>-->
+            <!--  </el-icon>-->
+            <!--</div>-->
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
 
-    <el-button type="danger" @click="clearParam">清空</el-button>
-    <el-button type="primary" @click="query">查询</el-button>
-
-    <el-radio-group v-model="isPointTo">
-      <el-radio value='0'>未指派</el-radio>
-      <el-radio value='1'>已指派</el-radio>
-    </el-radio-group>
+    <!--分页组件-->
+    <div class="pagination">
+      <el-pagination
+          v-model:current-page="pageAtr.currentPage"
+          :total="pageAtr.total"
+          layout="prev, pager, next"/>
+    </div>
   </div>
 
-  <div class="table">
-    <el-table :data="record" style="width: 100%">
-      <el-table-column label="序号" type="index"></el-table-column>
-      <!--    <el-table-column label="编号" prop="id"></el-table-column>-->
-      <el-table-column label="反馈者姓名" prop="name"></el-table-column>
-      <el-table-column label="所在省" prop="province"></el-table-column>
-      <el-table-column label="所在市" prop="city"></el-table-column>
-      <el-table-column label="AQI" prop="aqi">
-        <template #default="{row}">
-          <div :style="{color: row.color}">{{ row.levelDesc }}({{row.level}})</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="反馈日期" prop="date"></el-table-column>
-      <el-table-column label="反馈时间" prop="time"></el-table-column>
-      <el-table-column align="center" class="operation-container" label="操作">
-        <template #default="{row}">
-          <div>
-            <el-icon color="#0ec9f7" @click="pointTo(row)">
-              <Tickets/>
-            </el-icon>
-          </div>
-          <div>
-            <el-icon color="red">
-              <Pointer/>
-            </el-icon>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-  </div>
-
-  <!--分页组件-->
-  <div class="pagination">
-    <el-pagination
-        v-model:current-page="pageAtr.currentPage"
-        :total="pageAtr.total"
-        layout="prev, pager, next"/>
-  </div>
 </template>
 
 <script setup>
@@ -185,7 +188,7 @@ const getQuery = () => {
     city: selectAtr.selectedCity,
     aqi: levelAtr.selectedLevel,
     date: date,
-    isArranged: parseInt(isPointTo.value)
+    //isArranged: parseInt(isPointTo.value)
   }
 }
 
@@ -247,7 +250,17 @@ onMounted(async () => {
 }
 
 .table {
-  height: 500px;
+  height: 70vh;
   overflow: auto;
+}
+
+/*header筛选部分样式*/
+.head > span {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.main {
+  margin: 10px;
 }
 </style>
