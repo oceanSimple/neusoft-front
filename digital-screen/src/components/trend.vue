@@ -20,7 +20,7 @@ let option = ref({
   // 标题
   title: {
     // 主标题
-    text: '空气质量指数级别分布',
+    text: '12个月内空气质量超标趋势',
     textStyle: {
       color: '#ffffff',
       fontSize: 12,
@@ -49,7 +49,6 @@ const requestValue = async () => {
   requests.get('/screen/aqi2', {})
       .then(res => {
         // res.data返回的是length为12的数组
-        console.log(res.data)
         option.value.series[0].data = res.data;
         let myChart = echarts.init(document.getElementById('trend'));
         myChart.setOption(option.value);

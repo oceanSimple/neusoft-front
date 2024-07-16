@@ -5,9 +5,9 @@ export default {
   },
   onShow: function () {
     console.log('App Show')
-    uni.navigateTo({
-      url: '/pages/list/index'
-    })
+    // uni.navigateTo({
+    //   url: '/pages/list/index'
+    // })
   },
   onHide: function () {
     console.log('App Hide')

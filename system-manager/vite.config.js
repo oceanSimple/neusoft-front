@@ -17,6 +17,18 @@ export default defineConfig({
                 target: 'http://10.1.232.127:8080',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/server/, '')
+            },
+            '/local': {
+                // 后台地址
+                target: 'http://localhost:8080',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/local/, '')
+            },
+            '/linux': {
+                // 后台地址
+                target: 'http://111.229.78.126:8080',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/linux/, '')
             }
         }
     },

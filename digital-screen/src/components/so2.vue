@@ -56,7 +56,7 @@ const getOption = (data) => {
         barWidth: '60%',
         data: data.value,
         itemStyle: {
-          color: 'rgba(127,167,245,0.8)'
+          color: 'rgb(231,26,26)'
         }
       }
     ]

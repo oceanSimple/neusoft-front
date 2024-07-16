@@ -17,28 +17,6 @@
         <el-button type="primary" @click="login">登录</el-button>
       </div>
     </div>
-    <!--  <el-card class="card">-->
-    <!--    <template #header>-->
-    <!--      <div class="card-header">-->
-    <!--        <span>登录</span>-->
-    <!--      </div>-->
-    <!--    </template>-->
-
-    <!--    &lt;!&ndash;账号密码输入框&ndash;&gt;-->
-    <!--    <div class="my-input">-->
-    <!--      <span>编码</span>-->
-    <!--      <el-input v-model="account" placeholder="input your account code" style="width: 240px;margin-left: 10px;"/>-->
-    <!--    </div>-->
-    <!--    <div class="my-input">-->
-    <!--      <span>密码</span>-->
-    <!--      <el-input v-model="password" placeholder="input your password" style="width: 240px;margin-left: 10px"/>-->
-    <!--    </div>-->
-    <!--    &lt;!&ndash;登录按钮&ndash;&gt;-->
-    <!--    <div class="login-button">-->
-    <!--      <el-button type="primary" @click="login">登录</el-button>-->
-    <!--    </div>-->
-    <!--  </el-card>-->
-    <!--</div>-->
   </div>
 </template>
 
@@ -87,7 +65,7 @@ const login = async () => {
   padding: 20px; /* 内边距 */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 阴影效果 */
   width: 30%; /* 卡片宽度 */
-  height: 35vh;
+
   /* 居中显示 */
   text-align: center; /* 文本居中 */
   margin: 10% auto 50px;

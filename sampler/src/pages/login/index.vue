@@ -1,13 +1,13 @@
 <template>
   <view class="content">
-    <view style="height: 100px"></view>
+    <view style="height: 150px"></view>
     <view class="container card">
       <view class="title">东软环保公众监督平台</view>
       <view class="title">网格员端</view>
       <uni-easyinput v-model="code" class="inputs" placeholder="输入手机号" prefixIcon="person"></uni-easyinput>
       <uni-easyinput v-model="password" class="inputs" placeholder="输入登录密码" prefixIcon="locked"
                      type="password"></uni-easyinput>
-      <view class="register" @click="toRegister">注册</view>
+      <!--<view class="register" @click="toRegister">注册</view>-->
       <button class="login-button" type="default" @click="login">登录</button>
     </view>
   </view>

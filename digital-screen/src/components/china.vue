@@ -1,78 +1,90 @@
 <template>
-  <div id="map" style="width: 600px; height: 600px"></div>
+  <div id="map" style="width: 100%; height: 95vh"></div>
 </template>
 
 <script setup>
 import {onMounted} from "vue";
 import * as echarts from 'echarts';
 import chinaMapData from '../../public/china-map-data'
+import requests from "../util/request.js";
+import {dealMapRequest} from "../util/mapTool.js";
 
+const requestValue = async () => {
+  await requests.get('/screen/statistics', {})
+      .then(res => {
+        let data = dealMapRequest(res.data)
+
+        let myChart = echarts.init(document.getElementById("map"));
+        echarts.registerMap('china', chinaMapData);
+        let option = {
+          // 标题
+          title: {
+            // 主标题
+            text: '空气质量检查实时统计',
+            textStyle: {
+              color: '#ffffff',
+              fontSize: 12,
+            },
+            left: 'center',
+            bottom: '10%'
+          },
+          visualMap: [
+            {
+              type: 'piecewise',
+              show: true,
+              left: '20',
+
+              bottom: '30',
+              itemGap: 15,
+              itemWidth: 24,
+              padding: 0,
+              itemHeight: 16,
+              seriesIndex: [0],
+              pieces: [
+                {min: 5, label: '> 6',},
+                {min: 4, max: 5, label: '4-5', }, // 不指定 max，表示 max 为无限大（Infinity）。
+                {min: 1, max: 3, label: '1-3', },
+                {value: 0, label: '0',  opacity: 0},
+              ],
+              inRange: {
+                color: ['#fcfcfc', 'rgb(240,25,25)'],
+                symbolSize: [30, 100],
+                opacity: 1
+              },
+              textStyle: {
+                color: '#646A73',
+                fontSize: 14
+              }
+            }
+          ],
+          series: [
+            {
+              type: "map",
+              map: 'china', // 引入地图数据
+              mapType: 'china',
+              name: 'AQI统计',
+              label: {
+                show: true,
+                color: '#000',
+                fontSize: 5,
+              },
+
+              data: data,
+            },
+          ],
+          tooltip: {
+            trigger: "item",
+          },
+        };
+        myChart.setOption(option);
+        window.addEventListener("resize", () => {
+          myChart.resize();
+        });
+      })
+}
 onMounted(() => {
-  let myChart = echarts.init(document.getElementById("map"));
-  echarts.registerMap('china', chinaMapData);
-  let option = {
-    visualMap: [
-      {
-        type: 'piecewise',
-        show: true,
-        left: 'left',
-        top: 'bottom',
-        itemGap: 15,
-        itemWidth: 24,
-        padding: 0,
-        itemHeight: 16,
-        seriesIndex: [0],
-        pieces: [
-          {gt: 199, label: '> 199', color: '#ad0c11'},
-          {gt: 100, lte: 199, label: '100-199', color: 'rgba(33,151,255,0.6)'}, // 不指定 max，表示 max 为无限大（Infinity）。
-          {gte: 1, lte: 100, label: '1-100', color: 'rgba(33,151,255,0.3)'},
-          {value: 0, label: '0', color: '#F2F3F5', opacity: 0},
-        ],
-        textStyle: {
-          color: '#646A73',
-          fontSize: 14
-        }
-      }
-    ],
-    series: [
-      {
-        type: "map",
-        map: 'china', // 引入地图数据
-        mapType: 'china',
-        name: 'AQI统计',
-        label: {
-          show: true,
-          color: '#000',
-          fontSize: 5,
-        },
 
-        data: [
-          {
-            name: '河北省',
-            selected: false,
-            value: 10
-          },
-          {
-            name: '湖北省',
-            selected: false,
-            value: 220
-          },
-          {
-            name: '内蒙古自治区',
-            selected: false,
-            value: 300
-          }
-        ],
-      },
-    ],
-    tooltip: {
-      trigger: "item",
-    },
-  };
-  myChart.setOption(option);
-  window.addEventListener("resize", () => {
-    myChart.resize();
-  });
+  requestValue()
 })
 </script>
 

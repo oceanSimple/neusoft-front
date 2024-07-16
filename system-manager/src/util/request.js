@@ -4,10 +4,12 @@ import axios from "axios";
 
 const serverUrl = '/server'
 const mockUrl = '/mock'
-const baseUrl = serverUrl
+const localUrl = '/local'
+const linuxUrl = '/linux'
+const baseUrl = linuxUrl
 // 创建axios实例
 const requests = axios.create({
-        baseURL: serverUrl,
+        baseURL: baseUrl,
         timeout: 5000
     }
 );

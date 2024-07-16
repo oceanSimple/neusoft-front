@@ -16,7 +16,7 @@
           <uni-easyinput v-model="data.district" placeholder="请输入地址"></uni-easyinput>
         </uni-forms-item>
 
-        <button type="primary" @click="commit">提交</button>
+        <button type="primary" @click="commitGrid">提交</button>
       </view>
     </uni-forms>
   </view>
@@ -41,8 +41,8 @@ const cityData = reactive({
   city: [],
 })
 
-watch(province, (newVal, oldVal) => {
-  console.log('province change', newVal)
+watch(dataStore, (newVal, oldVal) => {
+  //console.log('province change', newVal)
 })
 
 const toSelectProvincePage = () => {
@@ -57,20 +57,17 @@ const toSelectCityPage = () => {
   })
 }
 
-const commit = async () => {
-  console.log("commit")
+const commitGrid = async () => {
   // 提交
-  uni.request({
+  await uni.request({
     url: dataStore.requestPrefix + '/supervisor/grid',
     method: 'POST',
     header: {
       Authorization: 'Bearer ' + dataStore.jwt,
     },
     data: {
-      // province: data.province,
-      // city: data.city,
-      province: dataStore,
-      city: data.city,
+      province: dataStore.selectedProvince,
+      city: dataStore.selectedCity,
       address: data.district,
       x: data.longitude * 1000000,
       y: data.latitude * 1000000,
@@ -84,7 +81,7 @@ const commit = async () => {
         })
       } else {
         uni.showToast({
-          title: res.data.msg,
+          title: '网格提交失败',
           icon: 'none',
         })
       }

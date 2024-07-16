@@ -64,6 +64,7 @@ const tableInfo = reactive({
 
 // 返回
 const back = () => {
+  //console.log('back')
   router.push("/home/publicSupervision")
 }
 
@@ -99,7 +100,7 @@ function timeFormat(time) {
     time: ""
   }
   // 时间格式转换
-  let slice = time.split(" ")
+  let slice = time.split("T")
   result.date = slice[0]
   result.time = slice[1]
   return result

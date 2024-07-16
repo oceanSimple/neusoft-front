@@ -1,6 +1,7 @@
 <template>
   <view class="container">
     <view class="empty"></view>
+    <view class="title">详情提交</view>
     <view class="table">
       <uni-card>
         <view v-for="(info, index) in aqiInfo" :key="info.level" class="table-row">
@@ -70,6 +71,11 @@ const submit = () => {
         uni.navigateTo({
           url: '/pages/history/index',
         })
+      } else {
+        uni.showToast({
+          title: '禁止恶意反馈！同一用户同一地点在一天内只允许反馈一次',
+          icon: 'none'
+        })
       }
     },
   })
@@ -82,13 +88,15 @@ onMounted(() => {
 
 <style scoped>
 .container {
-  background: linear-gradient(to bottom, #e8f5e9, #c8e6c9);
+  background-image: url("https://i.ibb.co/k2RTsys/tuscany-5078088-1280.jpg");
+  background-repeat: no-repeat;
+  background-position: center center; /* 或使用预定义的关键词如 top, bottom, left, right */
   /* 其他样式（如高度）根据需要添加 */
   height: 100vh; /* 使渐变覆盖整个视口高度 */
 }
 
 .empty {
-  height: 50px;
+  height: 20px;
 }
 
 .table-row {
@@ -108,6 +116,12 @@ onMounted(() => {
 .tip {
   font-size: 16px;
   font-weight: bold;
+  background-color: white;
+  width: 60%;
+  border-radius: 20px;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .box {
@@ -116,9 +130,17 @@ onMounted(() => {
 .info-input {
   width: 90%;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 .submit {
   margin-top: 20px;
   width: 90%;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
 }
 </style>

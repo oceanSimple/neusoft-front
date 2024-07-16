@@ -7,7 +7,7 @@
           <span class="title-header">东软环保公众监督平台管理系统</span>
         </div>
         <div>
-          <span class="title-adminName">系统管理员：{{ adminStore.nickname }}</span>
+          <!--<span class="title-adminName">系统管理员：{{ adminStore.nickname }}</span>-->
           <el-button size="small" type="danger" @click="loginOut">OUT</el-button>
         </div>
       </el-header>

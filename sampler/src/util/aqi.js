@@ -5,7 +5,7 @@ export const aqiLevelToColor = (info) => {
                 item.color = '#00e400';
                 break;
             case 2:
-                item.color = '#ff0';
+                item.color = '#cccc06';
                 break;
             case 3:
                 item.color = '#ff7e00';

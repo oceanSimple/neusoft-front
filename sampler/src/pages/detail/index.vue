@@ -48,7 +48,7 @@
       </view>
 
       <view class="data-view" style="margin-top: 20px;">实测AQI值：{{ aqiNum }}</view>
-      <view class="data-view">实测AQI等级：{{ aqiInfo.level }}  {{aqiInfo.desc}}</view>
+      <view class="data-view">实测AQI等级：{{ aqiInfo.level }} {{ aqiInfo.desc }}</view>
 
       <view class="button" @click="submit">提交</view>
     </uni-card>
@@ -65,9 +65,9 @@ import {getAQIByParam, getAQILevel} from "../../util/calculate";
 const dataStore = useDataStore();
 let taskInfo = reactive(dataStore.taskInfo);
 const data = reactive({
-  so2: 15.7,
-  co: 30,
-  pm25: 54.4,
+  so2: 0,
+  co: 0,
+  pm25: 0,
 })
 const aqiNum = ref(0)
 const aqiLevel = ref(0)
@@ -111,14 +111,21 @@ const submit = async () => {
       gridId: taskInfo.gridId,
     },
     success: (res) => {
-      console.log(res)
+      if (res.code === 0) {
+        uni.navigateTo({
+          url: '/pages/list/index'
+        })
+        console.log('success')
+      } else {
+        console.log('fail')
+      }
     },
   })
 }
 
 onMounted(() => {
   aqiLevelToDesc(taskInfo);
-  console.log(taskInfo)
+  //console.log(taskInfo)
 });
 </script>
 

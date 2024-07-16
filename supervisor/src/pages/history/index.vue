@@ -1,7 +1,9 @@
 <template>
   <view class="background-gradient">
-    <view style="height: 20px"></view>
-    <uni-card v-for="(info,index) in tableData" :key="index" @click="cardClick(info)">
+    <view class="button">
+      <uni-tag :circle="true" text="新增反馈" type="primary" @click="toGrid" />
+    </view>
+    <uni-card style="border-radius: 10px" v-for="(info,index) in tableData" :key="index" @click="cardClick(info)">
       <view class="table-row">
         <view :style="{background: info.color}" class="table-aqi">{{ info.aqi }}</view>
         <view class="table-time">{{ info.date }} {{ info.time }}</view>
@@ -37,6 +39,12 @@ const cardClick = (info) => {
   console.log(info)
 }
 
+const toGrid = () => {
+  uni.navigateTo({
+    url: '/pages/grid/index',
+  })
+}
+
 onMounted(async () => {
   await getHistoryInfo()
 })
@@ -44,9 +52,11 @@ onMounted(async () => {
 
 <style scoped>
 .background-gradient {
-  background: linear-gradient(to bottom, #f6f8f6, #c8e6c9);
+  background-image: url("https://i.ibb.co/k2RTsys/tuscany-5078088-1280.jpg");
+  background-repeat: no-repeat;
+  background-position: center center; /* 或使用预定义的关键词如 top, bottom, left, right */
   /* 其他样式（如高度）根据需要添加 */
-  height: 100vh; /* 使渐变覆盖整个视口高度 */
+
 }
 
 .table-row {
@@ -74,5 +84,11 @@ onMounted(async () => {
 .table-city {
   width: 25%;
   margin-left: 3%;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 20px;
 }
 </style>

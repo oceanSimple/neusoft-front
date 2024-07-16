@@ -2,9 +2,11 @@ import axios from "axios";
 // 主要为了告知login请求，因为login不需要jwt token
 const baseUrl = '/mock'
 const serverUrl = '/server'
+const localUrl = '/local'
+const linuxUrl = '/linux'
 // 创建axios实例
 const requests = axios.create({
-        baseURL: serverUrl,
+        baseURL: linuxUrl,
         timeout: 5000
     }
 );
@@ -12,16 +14,16 @@ const requests = axios.create({
 // 请求拦截器
 requests.interceptors.request.use(
     config => {
-        // 配置jwt token
-        const token = localStorage.getItem("jwtToken");
-        if (token) {
-            config.headers.Authorization = "Bearer " + token;
-        } else {
-            // 重定向到登录页面
-            window.location.href = "/#/login";
-            // 中止请求
-            return Promise.reject("require jwt token");
-        }
+        // // 配置jwt token
+        // const token = localStorage.getItem("jwtToken");
+        // if (token) {
+        //     config.headers.Authorization = "Bearer " + token;
+        // } else {
+        //     // 重定向到登录页面
+        //     window.location.href = "/#/login";
+        //     // 中止请求
+        //     return Promise.reject("require jwt token");
+        // }
         return config;
     },
     error => {

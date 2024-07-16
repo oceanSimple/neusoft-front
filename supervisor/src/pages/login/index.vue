@@ -46,7 +46,7 @@ const login = async () => {
           data: res.data.data
         })
         uni.navigateTo({
-          url: '/pages/grid/index',
+          url: '/pages/history/index',
         })
       } else {
         uni.showToast({

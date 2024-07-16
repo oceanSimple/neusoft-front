@@ -153,6 +153,7 @@ let route = router;
 // 更新表格数据
 const updateTable = async () => {
   const data = await dataStore.getPublicSupervisionData(getQuery())
+  //console.log(data)
   // 将分页插件的数据填充
   pageAtr.total = data.total
   // 将aqi数字转换成信息
@@ -178,6 +179,7 @@ const getQuery = () => {
   if (datePicker.value === '') {
     date = ''
   } else {
+    console.log(datePicker.value)
     date = datePicker.value.getFullYear() + '-' +
         (datePicker.value.getMonth() + 1).toString().padStart(2, '0') + '-' +
         datePicker.value.getDate().toString().padStart(2, '0');
@@ -206,11 +208,14 @@ watch(() => pageAtr.currentPage, async (newVal) => {
 // 监听selectAtr.selectedProvince的变化
 watch(() => selectAtr.selectedProvince, (newVal) => {
   if (newVal === '') {
+    // 禁止选择city
     selectAtr.cityDisabled = true
   } else {
     // 清空city
     selectAtr.selectedCity = ''
+    // 获取city下拉框的数据
     selectAtr.city = getCities(newVal)
+    // 允许选择city
     selectAtr.cityDisabled = false
   }
 })
@@ -250,7 +255,7 @@ onMounted(async () => {
 }
 
 .table {
-  height: 70vh;
+  height: 75vh;
   overflow: auto;
 }
 

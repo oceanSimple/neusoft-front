@@ -14,7 +14,7 @@ let option = ref({
     {
       type: 'gauge',
       // 偏离中心位置
-      center: ['50%', '40%'],
+      center: ['50%', '50%'],
       // 进度条(即70/100中，70的部分)
       progress: {
         show: true,

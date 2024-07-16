@@ -13,8 +13,8 @@
           <uni-easyinput v-model="valiFormData.name" placeholder="真实姓名便于我们联系您"></uni-easyinput>
         </uni-forms-item>
 
-        <uni-forms-item label="年龄" name="age" required>
-          <uni-easyinput v-model="valiFormData.age" placeholder="年龄"></uni-easyinput>
+        <uni-forms-item label="出生日期" name="birth">
+          <uni-datetime-picker v-model="valiFormData.birth" :clear-icon="true" type="date"/>
         </uni-forms-item>
 
         <uni-forms-item label="性别">
@@ -43,7 +43,7 @@ let instance = getCurrentInstance()
 const valiFormData = reactive({
   phone: '',
   name: '',
-  age: 12,
+  birth: '',
   sex: '',
   password: '',
   Rpassword: '',
@@ -59,15 +59,6 @@ const sexs = [{
 
 // 表单校验规则
 const rules = {
-  age: {
-    rules: [{
-      required: true,
-      errorMessage: '年龄不能为空'
-    }, {
-      format: 'number',
-      errorMessage: '年龄必须为数字'
-    }]
-  },
 }
 
 // 提交按钮
@@ -121,8 +112,7 @@ const register = async () => {
     data: {
       phoneNumber: valiFormData.phone,
       name: valiFormData.name,
-      // TODO 需要用户的生日，年月日，2021-03-05
-      birthday: '2021-03-05',
+      birthday: '',
       sex: valiFormData.sex,
       password: valiFormData.password,
       remarks: 'remarks'
@@ -151,11 +141,12 @@ const register = async () => {
 .empty {
   height: 80px;
 }
+
 .container {
   background-image: url("https://i.ibb.co/k2RTsys/tuscany-5078088-1280.jpg");
   background-repeat: no-repeat;
   background-position: center center; /* 或使用预定义的关键词如 top, bottom, left, right */
-  height: 800px;
+  height: 100vh;
 }
 
 .top-title {
