@@ -8,10 +8,10 @@
         {{ tableInfo.goodCount }}
       </el-descriptions-item>
       <el-descriptions-item label="省会城市网格覆盖范围">
-        {{ tableInfo.provinceGrid }}%
+        {{ tableInfo.provinceGrid }}
       </el-descriptions-item>
       <el-descriptions-item label="大城市网格覆盖范围">
-        {{ tableInfo.cityGrid }}%
+        {{ tableInfo.cityGrid }}
       </el-descriptions-item>
     </el-descriptions>
   </div>

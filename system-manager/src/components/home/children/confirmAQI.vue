@@ -163,6 +163,11 @@ const pointTo = (row) => {
   console.log(dataStore.aqiConfirmInfo)
 }
 
+// 监听currentPage的变化
+watch(() => pageAtr.currentPage, async (newVal) => {
+  await updateTable(newVal)
+})
+
 onMounted(async () => {
   // 初始化select
   selectAtr.province = getProvinces()

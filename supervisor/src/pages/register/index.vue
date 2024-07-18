@@ -41,12 +41,12 @@ import {useDataStore} from "../../stores/data";
 
 let instance = getCurrentInstance()
 const valiFormData = reactive({
-  phone: '',
-  name: '',
+  phone: '15985632547',
+  name: 'ocean',
   birth: '',
   sex: '',
-  password: '',
-  Rpassword: '',
+  password: '123456',
+  Rpassword: '123456',
 })
 
 const sexs = [{
@@ -112,7 +112,7 @@ const register = async () => {
     data: {
       phoneNumber: valiFormData.phone,
       name: valiFormData.name,
-      birthday: '',
+      birthday: valiFormData.birth,
       sex: valiFormData.sex,
       password: valiFormData.password,
       remarks: 'remarks'
@@ -128,7 +128,7 @@ const register = async () => {
         })
       } else {
         uni.showToast({
-          title: '注册失败',
+          title: '手机号格式错误',
           icon: 'none'
         })
       }

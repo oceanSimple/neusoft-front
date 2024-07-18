@@ -39,8 +39,8 @@
       </div>
 
       <div class="main-right">
-        <pm25></pm25>
-        <so2></so2>
+        <pm25 style="margin-bottom: 50px;"></pm25>
+        <so2 style="margin-bottom: 50px;"></so2>
         <co></co>
       </div>
     </div>
@@ -141,8 +141,8 @@ onMounted(() => {
 }
 
 .pie {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 70px;
+  margin-bottom: 70px;
 }
 
 .china {

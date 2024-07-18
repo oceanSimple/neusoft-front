@@ -52,9 +52,8 @@ onMounted(async () => {
 
 <style scoped>
 .background-gradient {
-  background-image: url("https://i.ibb.co/k2RTsys/tuscany-5078088-1280.jpg");
-  background-repeat: no-repeat;
-  background-position: center center; /* 或使用预定义的关键词如 top, bottom, left, right */
+  background-image: linear-gradient(to bottom, rgb(209, 242, 255), white);
+  min-height: 100vh;
   /* 其他样式（如高度）根据需要添加 */
 
 }

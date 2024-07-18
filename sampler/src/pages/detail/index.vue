@@ -73,7 +73,8 @@ const aqiNum = ref(0)
 const aqiLevel = ref(0)
 const aqiInfo = reactive({
   level: 0,
-  desc: ''
+  desc: '',
+  number: 0,
 })
 watch(() => data.so2, (newVal) => {
   aqiNum.value = getAQIByParam(data.so2, data.co, data.pm25)
@@ -86,7 +87,7 @@ watch(() => data.co, (newVal) => {
   aqiInfoFunc()
 })
 watch(() => data.pm25, (newVal) => {
-  aqiNum.value = getAQIByParam(data.so2, data.co, data.pm25)
+  aqiNum.value = getAQIByParam(data.so2, data.pm25, data.co)
   aqiLevel.value = getAQILevel(aqiNum.value)
   aqiInfoFunc()
 })
@@ -95,6 +96,7 @@ const aqiInfoFunc = () => {
   aqiLevelToDesc(item)
   aqiInfo.level = item.level
   aqiInfo.desc = item.desc
+  aqiInfo.number = item.number
 }
 const submit = async () => {
   await uni.request({
@@ -107,11 +109,11 @@ const submit = async () => {
       so2: data.so2,
       co: data.co,
       pm25: data.pm25,
-      aqi: aqiNum.value,
+      aqi: aqiInfo.number,
       gridId: taskInfo.gridId,
     },
     success: (res) => {
-      if (res.code === 0) {
+      if (res.data.code === 0) {
         uni.navigateTo({
           url: '/pages/list/index'
         })

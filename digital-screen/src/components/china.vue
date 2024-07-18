@@ -23,7 +23,7 @@ const requestValue = async () => {
             text: '空气质量检查实时统计',
             textStyle: {
               color: '#ffffff',
-              fontSize: 12,
+              fontSize: 20,
             },
             left: 'center',
             bottom: '10%'
@@ -66,7 +66,7 @@ const requestValue = async () => {
               label: {
                 show: true,
                 color: '#000',
-                fontSize: 5,
+                fontSize: 7,
               },
 
               data: data,

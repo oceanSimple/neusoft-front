@@ -18,7 +18,7 @@ import {onMounted, ref} from 'vue';
 import {useDataStore} from '../../store/dataStore';
 
 const dataStore = useDataStore();
-const code = ref('beijixiong1');
+const code = ref('beijixiong2');
 const password = ref('123456');
 
 const login = async () => {

@@ -4,9 +4,10 @@ const baseUrl = '/mock'
 const serverUrl = '/server'
 const localUrl = '/local'
 const linuxUrl = '/linux'
+const cloudUrl = '/cloud'
 // 创建axios实例
 const requests = axios.create({
-        baseURL: linuxUrl,
+        baseURL: cloudUrl,
         timeout: 5000
     }
 );

@@ -79,7 +79,7 @@ let option = ref({
 const requestValue = async () => {
   await requests.get('/screen/bigcity', {})
       .then(res => {
-        value.value = res.data
+        value.value = parseFloat(res.data.replace('%', ''))
         option.value.series[0].data[0].value = value.value
         let myChart = echarts.init(document.getElementById('city'));
         myChart.setOption(option.value);

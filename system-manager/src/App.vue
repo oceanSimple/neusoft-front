@@ -7,7 +7,7 @@ import {onMounted} from "vue";
 import {useRouter} from "vue-router";
 const router = useRouter();
 onMounted(() => {
-  router.push('/home');
+  router.push('/login');
 });
 </script>
 

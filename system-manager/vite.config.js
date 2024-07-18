@@ -29,7 +29,13 @@ export default defineConfig({
                 target: 'http://111.229.78.126:8080',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/linux/, '')
-            }
+            },
+            '/cloud': {
+                // 后台地址
+                target: 'http://172.18.42.107:8084',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/cloud/, '')
+            },
         }
     },
 })

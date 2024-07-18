@@ -60,7 +60,7 @@
 
       <!--footer-->
       <el-footer class="footer">
-        <div>©️版权所有 ocean team</div>
+        <div>©️版权所有 北极熊的team</div>
       </el-footer>
     </el-container>
   </div>
